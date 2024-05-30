@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { AccountForm } from "./AccountForm"
 import { AddressForm } from "./AddressForm"
 import { UserForm } from "./UserForm"
@@ -30,11 +30,13 @@ const INITIAL_DATA: FormData = {
 
 function App() {
   const [data, setData] = useState(INITIAL_DATA)
+
   function updateFields(fields: Partial<FormData>) {
     setData(prev => {
       return { ...prev, ...fields }
     })
   }
+
   const { steps, currentStepIndex, step, isFirstStep, isLastStep, back, next } = useMultiStepForm([
   <UserForm {...data} updateFields = {updateFields} />, 
   <AddressForm {...data} updateFields = {updateFields}/>, 
@@ -43,7 +45,8 @@ function App() {
 
   function onSubmit(e: FormEvent) {
     e.preventDefault()
-    next()
+    if (!isLastStep) return next()
+    alert("Successful Account Creation")
   }
   return  (
   <div 
@@ -54,7 +57,8 @@ function App() {
       padding: "2rem",
       margin: "1rem",
       borderRadius: ".5rem",
-      fontFamily: "Arial"
+      fontFamily: "Arial",
+      maxWidth: "max-content",
     }}>
     <form onSubmit={onSubmit}>
       <div style = {{position: "absolute", top: ".5rem", right: ".5rem" }}>
