@@ -49,3 +49,8 @@ function App() {
 }
 
 export default App;
+
+
+/*
+return <Outlet context = {note} />
+*/
